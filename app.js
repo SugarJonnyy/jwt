@@ -4,12 +4,15 @@ const app = express()
 const asyncWrapper = require('./middlewares/async')
 const notFoundMiddleware = require('./middlewares/notFound')
 const errorHandlerMiddleware = require('./middlewares/errorhandler')
+const mainRouter = require('./routes/route')
 
 
 
 //middleware
 app.use(express.static('./public'))
 app.use(express.json())
+
+app.use('/api/v1', mainRouter)
 
 
 app.use(notFoundMiddleware)
