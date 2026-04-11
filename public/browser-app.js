@@ -29,6 +29,7 @@ formDOM.addEventListener('submit', async (e) => {
     tokenDOM.textContent = 'token present'
     tokenDOM.classList.add('text-success')
   } catch (error) {
+    console.log('error data:', error.response.data)  // ADD THIS
     formAlertDOM.style.display = 'block'
     formAlertDOM.textContent = error.response.data.msg
     localStorage.removeItem('token')
@@ -38,7 +39,7 @@ formDOM.addEventListener('submit', async (e) => {
   }
   setTimeout(() => {
     formAlertDOM.style.display = 'none'
-  }, 2000)
+  }, 5000)  // increased to 5 seconds so you can see it
 })
 
 btnDOM.addEventListener('click', async () => {
@@ -49,9 +50,7 @@ btnDOM.addEventListener('click', async () => {
         Authorization: `Bearer ${token}`,
       },
     })
-    resultDOM.innerHTML = `<h5>${data.msg}</h5><p>${data.secret}</p>`
-
-    data.secret
+    resultDOM.innerHTML = `<h5>${data.msg}</h5>`
   } catch (error) {
     localStorage.removeItem('token')
     resultDOM.innerHTML = `<p>${error.response.data.msg}</p>`
