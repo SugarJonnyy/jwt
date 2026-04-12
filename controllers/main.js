@@ -1,4 +1,4 @@
-const {customAPIError} = require('../errors/customErrorHandler')
+const {badRequestError} = require('../errors/index')
 const jwt = require('jsonwebtoken')
 
 const login = async (req, res) =>{
@@ -6,7 +6,7 @@ const login = async (req, res) =>{
     console.log(username, password) 
 
     if(!username || !password){
-        throw new customAPIError("Please provide email and password!", 400)
+        throw new badRequestError("Please provide email and password!")
     }
 
     // for only demo normally provided by the db!!!
@@ -21,20 +21,11 @@ const login = async (req, res) =>{
 
 const dashboard = async (req, res) =>{
 
-    const authHeader = req.headers.authorization
+    const luckyNumber = Math.floor(Math.random() * 100)
 
-    if(!authHeader || !authHeader.startsWith('Bearer')){
-        throw new customAPIError("No token provided", 401)
-    }
-    const token = authHeader.split(' ')[1]
+    res.status(200).json({msg: `Hi ${req.user.username} are now authorized! Here is your secret key ${luckyNumber}`})
 
-    try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET)
-        const luckyNumber = Math.floor(Math.random() * 100)
-        res.status(200).json({msg: `Hi ${decoded.username} are now authorized! Here is your secret key ${luckyNumber}`})
-    } catch (error) {
-        throw new customAPIError("Not authorized to access this route", 401)
-    }
+
 }
 
 module.exports = {
